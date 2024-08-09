@@ -1,1 +1,83 @@
-<p>signup-step1 works!</p>
+<div
+  class="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-200 to-blue-300"
+>
+  <div
+    class="flex flex-col lg:flex-row bg-white rounded-lg shadow-lg max-w-4xl w-full"
+  >
+    <div class="bg-blue-100 lg:w-1/2 flex justify-center items-center">
+      <img
+        src="../../../assets/images/solvei8-logo1.png"
+        alt="Illustration"
+        class="w-full h-full"
+      />
+    </div>
+    <div class="lg:w-1/2 p-8">
+      <h1 class="text-2xl font-bold mb-4">Create Account</h1>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-label>Enter Email ID</mat-label>
+        <mat-form-field appearance="outline" class="w-full mb-4">
+          <input
+            matInput
+            formControlName="email"
+            placeholder="Enter email id"
+            type="email"
+            maxlength="20"
+          />
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            Please enter a valid email address.
+          </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Email is required.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-label>Enter Full Name</mat-label>
+        <mat-form-field appearance="outline" class="w-full mb-4">
+          <input
+            matInput
+            formControlName="name"
+            placeholder="Enter full name"
+            maxlength="10"
+            type="text"
+          />
+
+          <mat-error *ngIf="form.get('name')?.hasError('required')">
+            Full Name is required.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-label>Create Password</mat-label>
+        <mat-form-field appearance="outline" class="w-full mb-4">
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">
+            Password is required.
+          </mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            Password must be at least 6 characters long.
+          </mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('pattern')">
+            Password must include at least one digit and one special character.
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" class="w-full">Next</button>
+
+        <mat-error *ngIf="errMsg">
+          Please enter the details before proceed
+        </mat-error>
+      </form>
+    </div>
+  </div>
+</div>

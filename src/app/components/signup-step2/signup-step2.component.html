@@ -1,1 +1,90 @@
-<p>signup-step2 works!</p>
+<div
+  class="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-200 to-blue-300"
+>
+  <div
+    class="flex flex-col lg:flex-row bg-white rounded-lg shadow-lg max-w-4xl w-full"
+  >
+    <div class="bg-blue-100 lg:w-1/2 flex justify-center items-center">
+      <img
+        src="../../../assets/images/solvei8-logo1.png"
+        alt="Illustration"
+        class="w-full h-full"
+      />
+    </div>
+    <div class="lg:w-1/2 p-8">
+      <h1 class="text-2xl font-bold mb-4">Create Account</h1>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-label>Organisation-name</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input
+            matInput
+            formControlName="orgName"
+            placeholder="Enter Organization-name"
+            type="text"
+            maxlength="20"
+            (input)="validateOrganization()"
+          />
+          <mat-error *ngIf="organizationInvalid"
+            >Unknown organization-id</mat-error>
+        </mat-form-field>
+
+        <mat-label>Designation</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-select formControlName="designation">
+            <mat-option
+              *ngFor="let designation of designations"
+              [value]="designation"
+            >
+              {{ designation }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-label>Birth-date</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="birthdate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-label>City</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input
+            matInput
+            formControlName="city"
+            placeholder="Enter city"
+            maxlength="10"
+            type="text"
+          />
+        </mat-form-field>
+
+        <mat-label>Pincode</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input
+            matInput
+            formControlName="pincode"
+            placeholder="Enter pincode"
+            maxlength="6"
+            type="text"
+          />
+          <mat-error *ngIf="!form.get('pincode')?.valid">
+            Pincode must contain 6 digits
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" class="w-full">Next</button>
+
+        <mat-error *ngIf="errMsg">
+          Please enter the details before proceed
+        </mat-error>
+      </form>
+    </div>
+  </div>
+</div>

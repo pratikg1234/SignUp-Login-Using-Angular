@@ -14,13 +14,19 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupStep1Component } from './components/signup-step1/signup-step1.component';
 import { SignupStep2Component } from './components/signup-step2/signup-step2.component';
 import { SignupLoginComponent } from './components/signup-login/signup-login.component';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupStep1Component,
     SignupStep2Component,
-    SignupLoginComponent
+    SignupLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,13 +34,17 @@ import { SignupLoginComponent } from './components/signup-login/signup-login.com
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
+    FormsModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
     StoreModule.forRoot({ user: userReducer }),
-    StoreDevtoolsModule.instrument({ maxAge: 25 })
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

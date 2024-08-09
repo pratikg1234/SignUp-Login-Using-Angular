@@ -3,9 +3,9 @@ export interface User {
     phone?: string;
     password?: string;
     name?: string;
-    organization?: string;
+    orgName?: string;
     designation?: string;
-    birthDate?: Date;
+    birthdate?: Date;
     city?: string;
     pincode?: string;
   }
