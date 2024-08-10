@@ -25,3 +25,16 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+**Folder Structure Of Project**
+1. Inside assets folder there are images
+2. Inside app folder there are certain folders components, mockusers, models, store.
+3. Inside components folder there are various components like signup-login, login, signup-step1, signup-step2, signup-success, login-success.
+4. Inside mockusers folder there are sample mock users.
+5. Inside models folder there is interface/type for user.
+6. Inside store folder there are certain files for actions, reducer and selectors
+
+**For Running the Project**
+1. Clone the project using git clone command.
+2. Install the dependencies using command npm i.
+3. Go to \SignUp-Login-Using-Angular folder and use ng serve to run.
