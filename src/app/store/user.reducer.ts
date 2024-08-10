@@ -7,7 +7,7 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
-  user: null
+  user: {}
 };
 
 export const userReducer = createReducer(
