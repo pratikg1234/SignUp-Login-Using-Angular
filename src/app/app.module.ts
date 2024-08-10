@@ -20,6 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { SignupSuccessComponent } from './components/signup-success/signup-success.component';
+import { LoginSuccessComponent } from './components/login-success/login-success.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +29,8 @@ import { MatSelectModule } from '@angular/material/select';
     SignupStep1Component,
     SignupStep2Component,
     SignupLoginComponent,
+    SignupSuccessComponent,
+    LoginSuccessComponent,
   ],
   imports: [
     BrowserModule,

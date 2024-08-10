@@ -5,13 +5,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
+  selectUser,
   selectUserBirthDate,
   selectUserCity,
   selectUserDesignation,
   selectUserOrgName,
   selectUserPinCode,
 } from '../../store/user.selectors';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -29,28 +30,31 @@ export class SignupStep2Component {
   Birthdate$!: Observable<Date | undefined>;
   City$!: Observable<string | undefined>;
   Pincode$!: Observable<string | undefined>;
+  organizationNames: string[] = [];
   constructor(
     private router: Router,
     private store: Store,
     private fb: FormBuilder
-  ) {
+  ) {//creating the reactive form
     this.form = this.fb.group({
-      orgName: ['', [Validators.required]],
-      designation: [''],
-      birthdate: [''],
-      city: [''],
-      pincode: ['', [Validators.pattern('^[0-9]{6}$')]],
+      orgName: ['', Validators.required],
+      designation: ['', Validators.required],
+      birthdate: ['', Validators.required],
+      city: ['', Validators.required],
+      pincode: ['', [Validators.pattern('^[0-9]{6}$'), Validators.required]],
     });
-    console.log(this.form);
   }
 
   ngOnInit() {
-    this.designations = allowedOrganizations.map((org) => org.designation);
+    //unique list of designations
+    this.designations = [...new Set(allowedOrganizations.map((org) => org.designation))];
 
+    //unique list of organization names
+    this.organizationNames = [...new Set(allowedOrganizations.map((org) => org.orgname))];
     //For getting the org name from the store
     this.OrgName$ = this.store.select(selectUserOrgName);
-    this.OrgName$.subscribe((orgname) => {
-      this.form.patchValue({ orgname });
+    this.OrgName$.subscribe((orgName) => {
+      this.form.patchValue({ orgName });
     });
 
     //for getting the designation from the store
@@ -76,24 +80,33 @@ export class SignupStep2Component {
     this.Pincode$.subscribe((pincode) => {
       this.form.patchValue({ pincode });
     });
+
+    // Subscribe to form value changes and update the store
+    this.form.valueChanges.subscribe((formData) => {
+      this.store
+        .select(selectUser)
+        .pipe(take(1))
+        .subscribe((currentUser) => {
+          // Merge the current user object with the new form data
+          const updatedUser = { ...currentUser, ...formData };
+
+          // Dispatch the updated user object to the store
+          this.store.dispatch(setUser({ user: updatedUser }));
+        });
+    });
   }
 
   //For submitting the form
   onSubmit() {
     if (this.form.valid) {
-      const formData: any = this.form.value;
-      this.store.dispatch(setUser({ user: formData }));
-      allowedOrganizations.push(formData);
-      this.router.navigate(['/signup-step1']);
+      this.router.navigate(['/signup-success'])
     } else {
       this.errMsg = true;
     }
   }
-  validateOrganization() {
-    const org1 = this.form?.get('orgName')?.value;
-    const orgname = allowedOrganizations.map((org) => org.orgname);
-    console.log('ora name: ', orgname);
-    this.organizationInvalid = !orgname.includes(org1);
-    console.log('organizationInvalid', this.organizationInvalid);
+
+  //For navigating to signup-step1
+  onBackButtonClick(){
+    this.router.navigate(['/signup-step1']);
   }
 }

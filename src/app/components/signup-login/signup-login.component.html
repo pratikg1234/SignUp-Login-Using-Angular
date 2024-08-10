@@ -21,7 +21,6 @@
             formControlName="email"
             placeholder="Enter email id"
             type="email"
-            maxlength="20"
             [disabled]="form.get('mobileNumber')?.value"
           />
           <mat-error *ngIf="form.get('email')?.hasError('email')">

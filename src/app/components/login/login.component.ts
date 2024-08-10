@@ -5,7 +5,11 @@ import { select, Store } from '@ngrx/store';
 import { setUser } from '../../store/user.actions';
 import { mockUsers } from '../../mockusers/mock-data';
 import { Observable } from 'rxjs';
-import { selectUserName } from '../../store/user.selectors';
+import {
+  selectUserEmail,
+  selectUserName,
+  selectUserPassword,
+} from '../../store/user.selectors';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -16,19 +20,25 @@ import { User } from '../../models/user.model';
 export class LoginComponent {
   form: FormGroup;
   errMsg: boolean = false;
+  errforpass: boolean = false;
+  errforemail: boolean = false;
   userName$!: Observable<string | undefined>;
+  Password$!: Observable<string | undefined>;
+  Email$!: Observable<string | undefined>;
+  hide: boolean = true;
   constructor(
     private router: Router,
     private store: Store,
     private fb: FormBuilder
   ) {
-    
     this.form = this.fb.group({
       password: [
         '',
         [
           Validators.required,
-          Validators.pattern('^[0-9]{10}$'), // Allows 10 digits and numbers from 0 to 9
+          Validators.pattern(
+            '^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};:\'",.<>/?]{8,15}$'
+          ), // Allows 15 digits and numbers from 0 to 9 & all characters lowercase & uppercase
         ],
       ],
       email: ['', [Validators.required, Validators.email]],
@@ -36,45 +46,48 @@ export class LoginComponent {
     console.log(this.form);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     //selecting username from the store
     this.userName$ = this.store.select(selectUserName);
+    this.Email$ = this.store.select(selectUserEmail);
+    this.Email$.subscribe((email) => {
+      this.form.patchValue({ email });
+    });
 
+    //for getting the password from the store
+    this.Password$ = this.store.select(selectUserPassword);
+    this.Password$.subscribe((password) => {
+      this.form.patchValue({ password });
+    });
   }
+
+  //for form submission
   onSubmit() {
-    console.log('object');
-    if (this.form.value.email) {
-      // Remove the required validator from mobileNumber
-      this.form.get('mobileNumber')?.clearValidators();
-      this.form.get('mobileNumber')?.setValidators([
-        Validators.pattern('^[0-9]{10}$'), // Retaining the pattern validator
-      ]);
-      this.form.get('mobileNumber')?.updateValueAndValidity();
-    } else if (this.form.value.mobileNumber) {
-      // Remove the required validator from mobileNumber
-      this.form.get('email')?.clearValidators();
-      this.form.get('email')?.setValidators([
-        Validators.email, // Retaining the email validator
-      ]);
-      this.form.get('email')?.updateValueAndValidity();
-    }
-
-    const user = mockUsers.find(
-      (u) =>
-        u.email === this.form.get('email')?.value ||
-        u.phone === this.form.get('mobileNumber')?.value
-    );
-    if (this.form.valid) {
-      if (user) {
-        this.store.dispatch(setUser({ user }));
-        this.router.navigate(['/login']);
+    this.Password$ = this.store.select(selectUserPassword);
+    
+    this.Password$.subscribe((storedPassword) => {
+      const enteredPassword = this.form.get('password')?.value;
+      if (storedPassword !== enteredPassword) {
+        this.errforpass = true;
       } else {
-        // this.store.dispatch(setUser({ user: { email: this.emailOrPhone, phone: this.emailOrPhone } }));
-        this.router.navigate(['/signup-step1']);
+        this.errforpass = false;
       }
-    } else {
+    });
+    this.Email$.subscribe((storedEmail) => {
+      const enteredEmail = this.form.get('email')?.value;
+      if (storedEmail !== enteredEmail) {
+        this.errforemail = true;
+      } else {
+        this.errforemail = false;
+      }
+    });
+    if (this.form.invalid || this.errforemail || this.errforpass) {
       this.errMsg = true;
+      return;
     }
+    if(!this.errforemail && !this.errforpass){
+      this.router.navigate(['/login-success']);
+    }
+    
   }
- 
 }

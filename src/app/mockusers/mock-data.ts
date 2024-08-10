@@ -1,6 +1,6 @@
 export const mockUsers = [
-    { email: 'john@example.com', name:'John', phone: '1234567890', password: 'password123' },
-    { email: 'jane@example.com', name:'Jane', phone: '0987654321', password: 'password456' }
+    { email: 'john@12example.com', name:'John', phone: '1234567890', password: 'password#123' },
+    { email: 'jane@34example.com', name:'Jane', phone: '0987654321', password: 'password@456' }
   ];
   
   export const allowedOrganizations = [

@@ -11,8 +11,10 @@
         class="w-full h-full"
       />
     </div>
-    <div class="lg:w-1/2 p-8" >
-      <h1 class="text-2xl font-bold mb-4" *ngIf="userName$ | async as user">Welcome Back, {{user}} </h1>
+    <div class="lg:w-1/2 p-8">
+      <h1 class="text-2xl font-bold mb-4" *ngIf="userName$ | async as user">
+        Welcome Back, {{ user }}
+      </h1>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-label>Enter Email ID</mat-label>
         <mat-form-field appearance="outline" class="w-full mb-4">
@@ -33,25 +35,24 @@
             matInput
             formControlName="password"
             placeholder="Enter password"
-            maxlength="10"
-            type="text"
+            maxlength="15"
+            [type]="hide ? 'password' : 'text'"
           />
 
-          <!-- <mat-error *ngIf="form.controls['mobileNumber'].touched && form.value.mobileNumber.length !==10">
-            Incorrect password. Please try again.
-          </mat-error> -->
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
         </mat-form-field>
 
-        <button
-          mat-raised-button
-          color="primary"
-          class="w-full"
-        >
-          Next
-        </button>
-        
+        <button mat-raised-button color="primary" class="w-full">Next</button>
+
         <mat-error *ngIf="errMsg">
-          Please enter the details before proceed
+          Please enter correct email and password
         </mat-error>
       </form>
     </div>

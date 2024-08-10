@@ -4,8 +4,8 @@ import { mockUsers } from '../../mockusers/mock-data';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectUserEmail, selectUserName, selectUserPassword } from '../../store/user.selectors';
-import { Observable } from 'rxjs';
+import { selectUser, selectUserEmail, selectUserName, selectUserPassword } from '../../store/user.selectors';
+import { Observable, take } from 'rxjs';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -60,15 +60,27 @@ export class SignupStep1Component {
     this.Password$.subscribe(password => {
       this.form.patchValue({ password });
     });
+
+    // Subscribe to form value changes and update the store
+    this.form.valueChanges.subscribe((formData) => {
+      this.store
+        .select(selectUser)
+        .pipe(take(1))
+        .subscribe((currentUser) => {
+          // Merge the current user object with the new form data
+          const updatedUser = { ...currentUser, ...formData };
+
+          // Dispatch the updated user object to the store
+          this.store.dispatch(setUser({ user: updatedUser }));
+        });
+    });
   }
   //for submitting the form 
   onSubmit() {
     console.log('object');
     if (this.form.valid) {
-      const formData: any = this.form.value;
-      this.store.dispatch(setUser({ user: formData }));
-      mockUsers.push(formData);
-      console.log("mock users: ", mockUsers)
+      mockUsers.push(this.form.value)
+      console.log("mock users now: ",mockUsers)
       this.router.navigate(['/signup-step2']);
     } else {
       this.errMsg = true;
