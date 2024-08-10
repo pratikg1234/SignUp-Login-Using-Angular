@@ -77,10 +77,8 @@ export class SignupStep1Component {
   }
   //for submitting the form 
   onSubmit() {
-    console.log('object');
     if (this.form.valid) {
       mockUsers.push(this.form.value)
-      console.log("mock users now: ",mockUsers)
       this.router.navigate(['/signup-step2']);
     } else {
       this.errMsg = true;
