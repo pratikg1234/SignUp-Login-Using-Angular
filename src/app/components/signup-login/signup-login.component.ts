@@ -15,7 +15,7 @@ export class SignupLoginComponent {
   form: FormGroup;
   errMsg:boolean=false;
   constructor(private router: Router, private store: Store, private fb:FormBuilder) {
-    this.form = this.fb.group({
+    this.form = this.fb.group({//reactive form 
       mobileNumber: [
         '',
         [
@@ -25,7 +25,6 @@ export class SignupLoginComponent {
       ],
       email: ['',[Validators.required,Validators.email]]
     });
-    console.log(this.form)
 
     // Watch for changes in the mobileNumber field
     this.form.get('mobileNumber')?.valueChanges.subscribe(value => {
@@ -67,7 +66,6 @@ export class SignupLoginComponent {
 
     //checking if entered user already exits in the mocks & if it is, it will navigate to login
     const user = mockUsers.find(u => u.email == this.form.get('email')?.value || u.phone == this.form.get('mobileNumber')?.value);
-    console.log("user is: ",user)
     if(this.form.valid){//if form is valid
       if (user) {
         this.store.dispatch(setUser({ user }));

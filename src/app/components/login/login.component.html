@@ -23,7 +23,7 @@
             formControlName="email"
             placeholder="Enter email id"
             type="email"
-            maxlength="20"
+            maxlength="25"
           />
           <mat-error *ngIf="form.get('email')?.hasError('email')">
             Please enter a valid email address.
@@ -49,7 +49,7 @@
           </button>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" class="w-full">Next</button>
+        <button mat-raised-button color="primary" class="w-full btn">Next</button>
 
         <mat-error *ngIf="errMsg">
           Please enter correct email and password

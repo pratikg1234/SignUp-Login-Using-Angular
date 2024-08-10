@@ -1,0 +1,14 @@
+mat-form-field {
+  margin-bottom: 16px;
+}
+
+h1 {
+  color: #333;
+}
+
+.btn {
+  height: 56px;
+  font-size: 18px;
+  color: white !important;
+  background-color: rgb(48, 48, 154) !important;
+}

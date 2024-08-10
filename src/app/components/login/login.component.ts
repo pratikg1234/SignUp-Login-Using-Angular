@@ -36,14 +36,15 @@ export class LoginComponent {
         '',
         [
           Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(10),
           Validators.pattern(
-            '^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};:\'",.<>/?]{8,15}$'
-          ), // Allows 15 digits and numbers from 0 to 9 & all characters lowercase & uppercase
+            '^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};:\'",.<>/?]{6,10}$'
+          ),
         ],
       ],
       email: ['', [Validators.required, Validators.email]],
     });
-    console.log(this.form);
   }
 
   ngOnInit() {
