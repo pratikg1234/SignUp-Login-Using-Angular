@@ -48,38 +48,33 @@ export class SignupLoginComponent {
 
   //After we submit the form 
   onSubmit() {
-    if (this.form.value.email) {
-      // Remove the required validator from mobileNumber
-      this.form.get('mobileNumber')?.clearValidators();
-      this.form.get('mobileNumber')?.setValidators([
-        Validators.pattern('^[0-9]{10}$') // Retaining the pattern validator
-      ]);
-      this.form.get('mobileNumber')?.updateValueAndValidity();
-    } else if(this.form.value.mobileNumber){
-      // Remove the required validator from mobileNumber
-      this.form.get('email')?.clearValidators();
-      this.form.get('email')?.setValidators([
-        Validators.email // Retaining the email validator
-      ]);
-      this.form.get('email')?.updateValueAndValidity();
-    }
-
-    //checking if entered user already exits in the mocks & if it is, it will navigate to login
-    const user = mockUsers.find(u => u.email == this.form.get('email')?.value || u.phone == this.form.get('mobileNumber')?.value);
-    if(this.form.valid){//if form is valid
+    // Check if form is valid
+    if (this.form.valid) {
+      const user = mockUsers.find(
+        u =>
+          u.email === this.form.get('email')?.value ||
+          u.phone === this.form.get('mobileNumber')?.value
+      );
+  
       if (user) {
+        // If User exists, navigate to login
         this.store.dispatch(setUser({ user }));
         this.router.navigate(['/login']);
       } else {
-        this.store.dispatch(setUser({ user: { email: this.form.value.email, phone: this.form.value.mobileNumber } }));
+        // User does not exist, navigate to signup step 1
+        const newUser: User = {
+          email: this.form.value.email || '',
+          phone: this.form.value.mobileNumber || '',
+        };
+        this.store.dispatch(setUser({ user: newUser }));
         this.router.navigate(['/signup-step1']);
       }
+    } else {
+      // Showing error message if form is invalid
+      this.errMsg = true;
     }
-    else{
-      this.errMsg = true
-    }
-    
   }
+  
   //Prevents the users from entering the non-digits 
   validateInput(event: KeyboardEvent) {
     const inputChar = String.fromCharCode(event.keyCode);
