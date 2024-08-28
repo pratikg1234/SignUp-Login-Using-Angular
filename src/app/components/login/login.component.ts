@@ -37,9 +37,9 @@ export class LoginComponent {
         [
           Validators.required,
           Validators.minLength(6),
-          Validators.maxLength(10),
+          Validators.maxLength(15),
           Validators.pattern(
-            '^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};:\'",.<>/?]{6,10}$'
+            '^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};:\'",.<>/?]{6,15}$'
           ),
         ],
       ],
