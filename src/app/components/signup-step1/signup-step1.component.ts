@@ -33,9 +33,9 @@ export class SignupStep1Component {
         [
           Validators.required,
           Validators.minLength(6),
-          Validators.maxLength(10),
+          Validators.maxLength(15),
           Validators.pattern(
-            '^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{6,10}$'
+            '^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{6,15}$'
           ),
         ],
       ],
